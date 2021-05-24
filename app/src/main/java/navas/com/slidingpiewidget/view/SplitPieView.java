@@ -236,7 +236,7 @@ public class SplitPieView extends View {
 
     public void resetPies() {
         for (int i = 0; i < numberOfLines; i++) {
-            to[i] = (360 / (numberOfLines + 1)) * (i + 1);
+            to[i] = (360f / (numberOfLines + 1)) * (i + 1);
         }
 
         for (int i = 0; i <= numberOfLines; i++) {
@@ -265,6 +265,8 @@ public class SplitPieView extends View {
         radius = (right - left) / 2;
         centerX = ((right - left) / 2) + left;
         centerY = ((bottom - top) / 2) + top;
+
+        // TODO See a way to avoid calculating this always
         mOval = new RectF(left, top, right, bottom);
         mOval2 = new RectF(left - 5, top - 5, right + 5, bottom + 5);
 
@@ -318,12 +320,12 @@ public class SplitPieView extends View {
             // for first arc
             if (i == 0) {
                 if (arcsStatus[i] == 1) {
-                    canvas.drawArc(mOval, 0 - 90, arcsValue[i], true, mPaintSelectedArc);
+                    canvas.drawArc(mOval, -90, arcsValue[i], true, mPaintSelectedArc);
                     drawInCenter(canvas, formatDisplayAmountString("" + amountValueList[i]), 0, 0 + arcsValue[i], true, i);
                 } else if (arcsStatus[i] == 0) {
                     int color = ContextCompat.getColor(getContext(), pieColors[i]);
                     mPaintArc.setColor(color);
-                    canvas.drawArc(mOval, 0 - 90, arcsValue[i], true, mPaintArc);
+                    canvas.drawArc(mOval, -90, arcsValue[i], true, mPaintArc);
                     drawInCenter(canvas, formatDisplayAmountString("" + amountValueList[i]), 0, 0 + arcsValue[i], false, i);
                 }
 
@@ -668,8 +670,7 @@ public class SplitPieView extends View {
         Display display = a.getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
-        int width = size.x;
-        return width;
+        return size.x;
     }
 
     private String formatDisplayAmountString(String value) {
